@@ -39,7 +39,12 @@
     </properties>
   </component>
   <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+    <entry_points version="2.0">
+      <entry_point TYPE="class" FQNAME="Tests.QuestionPageTest" />
+      <entry_point TYPE="class" FQNAME="Tests.AbstractBaseTests.TestBase" />
+      <entry_point TYPE="method" FQNAME="Tests.QuestionPageTest void testSelectAlternatives()" />
+      <entry_point TYPE="method" FQNAME="Tests.QuestionPageTest void testSendAnswer()" />
+    </entry_points>
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

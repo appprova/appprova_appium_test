@@ -16,52 +16,49 @@
 package Pages;
 
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Set;
+import java.util.Observable;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.Thread.sleep;
 
 /**
  * A base for all the pages within the suite
  */
-public abstract class BasePage {
+abstract class BasePage {
 
-    /**
-     * The driver
-     */
-    protected final AndroidDriver driver;
+    final AndroidDriver driver;
+    private static final String WEBVIEW_CONTEXT = "WEBVIEW_com.appprova.appprovaandr";
+    private static final String NATIVE_CONTEXT = "NATIVE_APP";
 
-    /**
-     * A base constructor that sets the page's driver
-     *
-     * The page structure is being used within this test in order to separate the
-     * page actions from the tests.
-     *
-     * Please use the AppiumFieldDecorator class within the page factory. This way annotations
-     * like @AndroidFindBy within the page objects.
-     *
-     * @param driver the appium driver created in the beforesuite method.
-     */
-    protected BasePage(AndroidDriver driver){
+
+    BasePage(AndroidDriver driver){
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver, 5, TimeUnit.SECONDS), this);
     }
 
-    protected void switchToWebViewContext(){
-        try {
-            sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    void switchToWebViewContext(){
+        if (WEBVIEW_CONTEXT.equals(driver.getContext())){
+            return;
         }
-        Set contextNames = driver.getContextHandles();
-        for (Object contextName : contextNames) {
-            System.out.println(contextName); //prints out something like NATIVE_APP \n WEBVIEW_1
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver webDriver) {
+                return BasePage.this.driver.getContextHandles().contains(WEBVIEW_CONTEXT);
+            }
+        });
+        driver.context(WEBVIEW_CONTEXT);
+    }
+
+    void switchToNativeContext(){
+        if (NATIVE_CONTEXT.equals(driver.getContext())){
+            return;
         }
-        driver.context((String) contextNames.toArray()[1]); // set context to WEBVIEW_1
+        driver.context(NATIVE_CONTEXT);
     }
 }

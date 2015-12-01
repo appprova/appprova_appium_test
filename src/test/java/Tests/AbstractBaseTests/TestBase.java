@@ -17,9 +17,11 @@ package Tests.AbstractBaseTests;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import org.omg.PortableServer.THREAD_POLICY_ID;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,16 +36,7 @@ public abstract class TestBase {
      * Make the driver static. This allows it to be created only once
      * and used across all of the test classes.
      */
-    public static AndroidDriver<MobileElement> driver;
-
-    /**
-     * This allows the navigation to work within the app.
-     * The category name is returned so we can navigate to it from the navigation
-     * drawer.
-     *
-     * @return The name of the Android category
-     */
-    public abstract String getName();
+    protected static AndroidDriver<MobileElement> driver;
 
     /**
      * Method to initialize the test's page
@@ -89,13 +82,5 @@ public abstract class TestBase {
     @AfterClass
     public void restartApp() {
         driver.resetApp();
-    }
-
-    protected void sleep(int milliseconds){
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

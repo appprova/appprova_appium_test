@@ -17,27 +17,38 @@ package Pages;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.pagefactory.AndroidFindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class QuestionFragmentPage extends BasePage{
+public class QuestionPage extends BasePage{
 
-
-    public MobileElement answerButton;
-
-    public QuestionFragmentPage(AndroidDriver<MobileElement> driver) {
+    public QuestionPage(AndroidDriver<MobileElement> driver) {
         super(driver);
-        switchToWebViewContext();
     }
 
     @SuppressWarnings("unchecked")
     public List<MobileElement> getAlternatives(){
+        waitForAlternatives();
         return (List<MobileElement>)driver.findElementsByCssSelector("li");
     }
 
     public MobileElement getSelectedAlternative(){
+        waitForAlternatives();
         return (MobileElement) driver.findElementByCssSelector(".active");
+    }
+
+    public MobileElement getAnswerButton(){
+        switchToNativeContext();
+        return (MobileElement) driver.findElementById("button_answer");
+    }
+
+
+    private void waitForAlternatives(){
+        switchToWebViewContext();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOf(driver.findElementByCssSelector("li")));
     }
 
 }
