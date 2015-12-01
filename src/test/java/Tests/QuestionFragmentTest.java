@@ -15,20 +15,22 @@
 
 package Tests;
 
-import Pages.WebViewPage;
+import Pages.QuestionFragmentPage;
 import Tests.AbstractBaseTests.TestBase;
-import org.testng.Assert;
+import io.appium.java_client.MobileElement;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-/**
- * Tests for a webview
- */
-public class WebViewTest extends TestBase {
+import java.util.List;
+
+import static org.testng.AssertJUnit.assertEquals;
+
+
+public class QuestionFragmentTest extends TestBase {
     private final String FULL_URL = "http://www.google.com";
     private final String WEBVIEW_ACCESSIBILITY = "Google";
 
-    private WebViewPage webViewPage;
+    private QuestionFragmentPage webViewPage;
 
     @Override
     public String getName() {
@@ -41,7 +43,7 @@ public class WebViewTest extends TestBase {
     @BeforeTest
     @Override
     public void setUpPage() {
-        webViewPage = new WebViewPage(driver);
+        webViewPage = new QuestionFragmentPage(driver);
     }
 
     /**
@@ -49,8 +51,18 @@ public class WebViewTest extends TestBase {
      * checking the webview's content description
      */
     @Test
-    public void testWebView() throws InterruptedException {
-        webViewPage.gotoUrl(FULL_URL);
-        Assert.assertTrue(webViewPage.getWebDescription(WEBVIEW_ACCESSIBILITY));
+    public void testSelectAlternatives() throws InterruptedException {
+        List<MobileElement> alternatives = webViewPage.getAlternatives();
+        for (MobileElement element : alternatives){
+            element.click();
+            sleep(500);
+            assertEquals(webViewPage.getSelectedAlternative(), element);
+        }
+    }
+
+    @Test
+    public void testSendAnswer(){
+       // webViewPage.answerButton.click();
+        sleep(2000);
     }
 }

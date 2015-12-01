@@ -17,10 +17,14 @@ package Pages;
 
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.Thread.sleep;
 
 /**
  * A base for all the pages within the suite
@@ -30,7 +34,7 @@ public abstract class BasePage {
     /**
      * The driver
      */
-    protected final AppiumDriver driver;
+    protected final AndroidDriver driver;
 
     /**
      * A base constructor that sets the page's driver
@@ -43,8 +47,21 @@ public abstract class BasePage {
      *
      * @param driver the appium driver created in the beforesuite method.
      */
-    protected BasePage(AppiumDriver driver){
+    protected BasePage(AndroidDriver driver){
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver, 5, TimeUnit.SECONDS), this);
+    }
+
+    protected void switchToWebViewContext(){
+        try {
+            sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Set contextNames = driver.getContextHandles();
+        for (Object contextName : contextNames) {
+            System.out.println(contextName); //prints out something like NATIVE_APP \n WEBVIEW_1
+        }
+        driver.context((String) contextNames.toArray()[1]); // set context to WEBVIEW_1
     }
 }

@@ -15,15 +15,14 @@
 
 package Tests.AbstractBaseTests;
 
-import Pages.NavigationPage;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import org.omg.PortableServer.THREAD_POLICY_ID;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 /**
  * An abstract base for all of the Android tests within this package
@@ -45,11 +44,6 @@ public abstract class TestBase {
      * @return The name of the Android category
      */
     public abstract String getName();
-
-    /**
-     * A page containing the navigation drawer
-     */
-    private NavigationPage navigationPage;
 
     /**
      * Method to initialize the test's page
@@ -78,9 +72,6 @@ public abstract class TestBase {
 
         //Use a empty DesiredCapabilities object
         driver = new AndroidDriver<MobileElement>(url, new DesiredCapabilities());
-
-        //Use a higher value if your mobile elements take time to show up
-        driver.manage().timeouts().implicitlyWait(35, TimeUnit.SECONDS);
     }
 
     /**
@@ -92,23 +83,19 @@ public abstract class TestBase {
     }
 
     /**
-     *
-     *  Creates a navigation page and navigates to the Class' category
-     *  within the navigation drawer
-     *
-     */
-    @BeforeClass
-    public void navigateTo() throws InterruptedException {
-        navigationPage = new NavigationPage(driver);
-        navigationPage.gotoCategory(getName());
-    }
-
-    /**
      * Restart the app after every test class to go back to the main
      * screen and to reset the behavior
      */
     @AfterClass
     public void restartApp() {
         driver.resetApp();
+    }
+
+    protected void sleep(int milliseconds){
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -13,32 +13,31 @@
  * permissions and limitations under the License.
  */
 
-package Pages.Native;
+package Pages;
 
-import Pages.BasePage;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
-/**
- * A page for a camera preview
- */
-public class CameraPage extends BasePage {
-    /**
-     * The camera preview
-     */
-    @AndroidFindBy(id = "camera_surface_view")
-    private MobileElement cameraPreview;
+import java.util.List;
 
-    public CameraPage(AppiumDriver driver) {
+public class QuestionFragmentPage extends BasePage{
+
+
+    public MobileElement answerButton;
+
+    public QuestionFragmentPage(AndroidDriver<MobileElement> driver) {
         super(driver);
+        switchToWebViewContext();
     }
 
-    /**
-     *
-     * @return the content description of the camera preview
-     */
-    public String getCameraStatus(){
-        return cameraPreview.getAttribute("name");
+    @SuppressWarnings("unchecked")
+    public List<MobileElement> getAlternatives(){
+        return (List<MobileElement>)driver.findElementsByCssSelector("li");
     }
+
+    public MobileElement getSelectedAlternative(){
+        return (MobileElement) driver.findElementByCssSelector(".active");
+    }
+
 }
