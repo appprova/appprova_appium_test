@@ -17,6 +17,8 @@ package Pages.base;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -31,7 +33,7 @@ public class QuestionPage extends BasePage {
     @SuppressWarnings("unchecked")
     public List<MobileElement> getAlternatives(){
         waitForAlternatives();
-        return (List<MobileElement>)driver.findElementsByCssSelector("li");
+        return (List<MobileElement>)driver.findElementsByCssSelector(".alternative");
     }
 
     public MobileElement getSelectedAlternative(){
@@ -41,14 +43,18 @@ public class QuestionPage extends BasePage {
 
     public MobileElement getAnswerButton(){
         switchToNativeContext();
-        return (MobileElement) driver.findElementById("button_answer");
+        return (MobileElement) driver.findElementByName("RESPONDER");
     }
 
 
     private void waitForAlternatives(){
         switchToWebViewContext();
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOf(driver.findElementByCssSelector("li")));
+        wait.until(new  ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver webDriver) {
+                return driver.findElementsByCssSelector(".alternative").size() > 1;
+            }
+        });;
     }
 
 }

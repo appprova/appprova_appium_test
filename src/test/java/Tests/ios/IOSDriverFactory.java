@@ -19,6 +19,7 @@ import Tests.base.DriverFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,5 +49,12 @@ public class IOSDriverFactory extends DriverFactory {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    protected DesiredCapabilities getDesiredCapabilities() {
+        DesiredCapabilities capabilities = super.getDesiredCapabilities();
+        capabilities.setCapability("platformVersion", "9.1");
+        return capabilities;
     }
 }

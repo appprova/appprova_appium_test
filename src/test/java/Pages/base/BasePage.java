@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BasePage {
 
     protected final AppiumDriver driver;
-    private static final String WEBVIEW_CONTEXT = "WEBVIEW_com.appprova.appprovaandr";
+    private static final String WEBVIEW_CONTEXT_PREFIX = "WEBVIEW_";
     private static final String NATIVE_CONTEXT = "NATIVE_APP";
 
 
@@ -38,16 +38,16 @@ public abstract class BasePage {
     }
 
     public void switchToWebViewContext(){
-        if (WEBVIEW_CONTEXT.equals(driver.getContext())){
+        if (driver.getContext().contains(WEBVIEW_CONTEXT_PREFIX)){
             return;
         }
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebDriverWait wait = new WebDriverWait(driver, 15);
         wait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver webDriver) {
-                return BasePage.this.driver.getContextHandles().contains(WEBVIEW_CONTEXT);
+                return BasePage.this.driver.getContextHandles().size() > 1;
             }
         });
-        driver.context(WEBVIEW_CONTEXT);
+        driver.context((String) driver.getContextHandles().toArray()[1]);
     }
 
     public void switchToNativeContext(){

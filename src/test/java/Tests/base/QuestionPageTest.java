@@ -46,7 +46,7 @@ public abstract class QuestionPageTest extends TestBase {
         assertFalse(alternatives.isEmpty());
         for (MobileElement element : alternatives){
             element.click();
-            assertEquals(questionPage.getSelectedAlternative(), element);
+            assertEquals(questionPage.getSelectedAlternative().getText(), element.getText());
         }
     }
 
