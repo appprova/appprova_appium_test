@@ -13,10 +13,9 @@
  * permissions and limitations under the License.
  */
 
-package Tests;
+package Tests.base;
 
-import Pages.QuestionPage;
-import Tests.AbstractBaseTests.TestBase;
+import Pages.base.QuestionPage;
 import io.appium.java_client.MobileElement;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -27,28 +26,32 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
 
 
-public class QuestionPageTest extends TestBase {
+public abstract class QuestionPageTest extends TestBase {
 
-    private QuestionPage webViewPage;
+    protected QuestionPage questionPage;
+
+    protected QuestionPageTest(DriverFactory driverFactory) {
+        super(driverFactory);
+    }
 
     @BeforeTest
     @Override
     public void setUpPage() {
-        webViewPage = new QuestionPage(driver);
+        questionPage = new QuestionPage(driverFactory.getDriver());
     }
 
     @Test
     public void testSelectAlternatives() throws InterruptedException {
-        List<MobileElement> alternatives = webViewPage.getAlternatives();
+        List<MobileElement> alternatives = questionPage.getAlternatives();
         assertFalse(alternatives.isEmpty());
         for (MobileElement element : alternatives){
             element.click();
-            assertEquals(webViewPage.getSelectedAlternative(), element);
+            assertEquals(questionPage.getSelectedAlternative(), element);
         }
     }
 
     @Test
     public void testSendAnswer(){
-       webViewPage.getAnswerButton().click();
+       questionPage.getAnswerButton().click();
     }
 }

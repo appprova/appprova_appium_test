@@ -13,18 +13,18 @@
  * permissions and limitations under the License.
  */
 
-package Pages;
+package Pages.base;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class QuestionPage extends BasePage{
+public class QuestionPage extends BasePage {
 
-    public QuestionPage(AndroidDriver<MobileElement> driver) {
+    public QuestionPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }
 

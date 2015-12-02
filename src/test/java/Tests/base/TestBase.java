@@ -13,10 +13,10 @@
  * permissions and limitations under the License.
  */
 
-package Tests.AbstractBaseTests;
+package Tests.base;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
@@ -24,7 +24,6 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * An abstract base for all of the Android tests within this package
@@ -36,35 +35,19 @@ public abstract class TestBase {
      * Make the driver static. This allows it to be created only once
      * and used across all of the test classes.
      */
-    protected static AndroidDriver<MobileElement> driver;
+    protected static AppiumDriver<MobileElement> driver;
+    protected DriverFactory driverFactory;
 
-    /**
-     * Method to initialize the test's page
-     */
+    protected TestBase(DriverFactory driverFactory){
+        this.driverFactory = driverFactory;
+    }
+
     @BeforeTest
     public abstract void setUpPage();
 
-    /**
-     * This method runs before any other method.
-     *
-     * Appium follows a client - server model:
-     * We are setting up our appium client in order to connect to Device Farm's appium server.
-     *
-     * We do not need to and SHOULD NOT set our own DesiredCapabilities
-     * Device Farm creates custom settings at the server level. Setting your own DesiredCapabilities
-     * will result in unexpected results and failures.
-     *
-     * @throws MalformedURLException An exception that occurs when the URL is wrong
-     */
     @BeforeSuite
-    public void setUpAppium() throws MalformedURLException{
-
-        final String URL_STRING = "http://127.0.0.1:4723/wd/hub";
-
-        URL url = new URL(URL_STRING);
-
-        //Use a empty DesiredCapabilities object
-        driver = new AndroidDriver<MobileElement>(url, new DesiredCapabilities());
+    public final void setUpAppium() throws MalformedURLException{
+        driver = driverFactory.getDriver();
     }
 
     /**

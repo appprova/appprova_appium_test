@@ -13,36 +13,31 @@
  * permissions and limitations under the License.
  */
 
-package Pages;
+package Pages.base;
 
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A base for all the pages within the suite
- */
-abstract class BasePage {
+public abstract class BasePage {
 
-    final AndroidDriver driver;
+    protected final AppiumDriver driver;
     private static final String WEBVIEW_CONTEXT = "WEBVIEW_com.appprova.appprovaandr";
     private static final String NATIVE_CONTEXT = "NATIVE_APP";
 
 
-    BasePage(AndroidDriver driver){
+    protected BasePage(AppiumDriver driver){
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver, 5, TimeUnit.SECONDS), this);
     }
 
-    void switchToWebViewContext(){
+    public void switchToWebViewContext(){
         if (WEBVIEW_CONTEXT.equals(driver.getContext())){
             return;
         }
@@ -55,7 +50,7 @@ abstract class BasePage {
         driver.context(WEBVIEW_CONTEXT);
     }
 
-    void switchToNativeContext(){
+    public void switchToNativeContext(){
         if (NATIVE_CONTEXT.equals(driver.getContext())){
             return;
         }
